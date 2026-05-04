@@ -144,7 +144,7 @@ class Tetris:
 
         self._tick_id = None
         self._ai_tick_id = None
-        self.ai_speed = 400  # ms between AI moves (tunable: 100-800)
+        self.ai_speed = 600  # ms between AI moves (tunable: 100-800)
         self._draw()
         self._tick()
 
