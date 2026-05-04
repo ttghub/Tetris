@@ -39,7 +39,17 @@
 
 ## 📸 截图
 
-> *（请在此处添加游戏截图）*
+### 手动模式
+
+![Manual Play](screenshots/manual_play.png)
+
+### 暂停菜单（ESC）
+
+![Menu](screenshots/menu.png)
+
+### 游戏结束
+
+![Game Over](screenshots/game_over.png)
 
 ## 📥 下载
 
