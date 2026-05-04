@@ -1,101 +1,69 @@
-# Tetris
+# 🧱 俄罗斯方块 · AI智能对战版
 
-A classic Tetris game built with Python and tkinter. Features both manual play and AI auto-play modes.
+一款能让你**躺着看AI自己玩**的经典俄罗斯方块游戏！
 
-## Features
+---
 
-- **7 standard tetrominoes** (I/O/T/S/Z/J/L) with rotation and wall kicks
-- **Ghost piece** preview showing landing position
-- **Next piece** preview panel
-- **7-bag randomizer** for fair piece distribution
-- **Scoring system** (Single/Double/Triple/Tetris bonuses × level)
-- **10-level speed progression** (drop speed increases per level)
-- **AI auto-play mode** with heuristic evaluation (height, holes, bumpiness)
-- **In-game mode switching** (press `A` to toggle Manual ↔ AI, `ESC` for menu)
-- **Robust logging** with instant-flush crash diagnostics
+## ✨ 特色
 
-## Controls
+| 特性 | 说明 |
+|------|------|
+| 🎮 **双模式** | 手动操作 / AI自动演示，`A` 键一键切换 |
+| 🧠 **内置AI** | 高度+空洞+平整度三因子评估，轻松消100+行 |
+| 👻 **鬼影预览** | 半透明显示落点位置，精准归位 |
+| ⚡ **10级变速** | 每消10行升一级，速度层层爬升 |
+| 📊 **标准计分** | Single/Double/Triple/Tetris × 等级倍率 |
+| 💾 **崩溃日志** | 带时间戳的日志文件，异常原因一目了然 |
+| 📦 **即开即用** | 单文件 .exe，双击运行，无需安装 |
 
-| Key | Action |
-|-----|--------|
-| ← → | Move left/right |
-| ↑ | Rotate |
-| ↓ | Soft drop (+1 point/cell) |
-| Space | Hard drop (+2 points/cell) |
-| R | Restart |
-| A | Toggle Manual / AI mode |
-| ESC | Pause menu (M=Manual, A=AI, Q=Quit) |
+## 🎯 操作指南
 
-## Scoring
+| 按键 | 功能 |
+|------|------|
+| ↑↓←→ | 旋转 / 软降 / 移动 |
+| Space | 硬降 (+2分/格) |
+| `R` | 重新开始 |
+| `A` | 手动 / AI 一键切换 |
+| `ESC` | 暂停菜单 (M=手动, A=AI, Q=退出) |
 
-| Lines Cleared | Base Points |
-|---------------|-------------|
-| 1 (Single) | 100 × level |
-| 2 (Double) | 300 × level |
-| 3 (Triple) | 500 × level |
-| 4 (Tetris) | 800 × level |
+## 🧮 计分规则
 
-**Level** = `total_lines // 10 + 1`
+| 消行数 | 名称 | 基础分 |
+|--------|------|--------|
+| 1 | Single | 100 × 等级 |
+| 2 | Double | 300 × 等级 |
+| 3 | Triple | 500 × 等级 |
+| 4 | Tetris | 800 × 等级 |
 
-## Running from Source
+> 软降每格 +1分 | 硬降每格 +2分 | 等级 = 总消行 ÷ 10 + 1
+
+## 📸 截图
+
+> *（请在此处添加游戏截图）*
+
+## 📥 下载
+
+👉 **[点此下载 Tetris.exe](https://github.com/ttghub/Tetris/releases/latest)** (~15 MB，双击即玩)
+
+> 完全免费，纯用爱发电 ❤️ 喜欢的话给个 Star ⭐ 就行！
+
+## 🛠️ 开发
 
 ```bash
-# No dependencies required (pure Python standard library)
+# 运行游戏
 python tetris.py
-```
 
-## Running the EXE
+# 运行 AI 跑分 (100局)
+python ai_bot.py
 
-Download `Tetris.exe` from [Releases](https://github.com/YOUR_USER/Tetris/releases) and double-click to run.
+# 运行单元测试 (26项)
+python test_tetris.py
 
-No installation required — everything is bundled in the single EXE.
+# 运行压力测试 (10场景)
+python test_stress.py
 
-## Building the EXE
-
-```bash
-pip install pyinstaller
+# 打包 EXE
 pyinstaller --onefile --windowed --name Tetris tetris.py
 ```
 
-The EXE will be in `dist/Tetris.exe`.
-
-## Running Tests
-
-```bash
-# Unit tests (26 cases)
-python test_tetris.py
-
-# Stress tests (10 scenarios)
-python test_stress.py
-
-# AI bot validation (100 games)
-python ai_bot.py
-```
-
-## Project Structure
-
-```
-Tetris/
-├── tetris.py          # Main game (710+ lines)
-├── test_tetris.py     # Unit tests
-├── test_stress.py     # Stress tests
-├── ai_bot.py          # AI automated testing
-├── ai_gui.py          # AI visual demo
-├── requirements.txt   # Dependencies (none required)
-├── .gitignore
-└── README.md
-```
-
-## AI Mode
-
-The AI evaluates every possible rotation and column position, simulates the drop, clears lines, and scores the resulting board using a heuristic:
-
-- **Height** (×10) — minimize stack height
-- **Holes** (×25) — avoid creating gaps
-- **Bumpiness** (×2) — keep surface flat
-
-The AI consistently clears 100+ lines and scores 60,000+ points per game.
-
-## License
-
-MIT
+纯 Python 标准库 (tkinter)，无需 pip 安装任何依赖。
