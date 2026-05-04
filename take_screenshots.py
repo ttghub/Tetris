@@ -1,18 +1,37 @@
 """Take screenshots of Tetris game for README"""
-import sys, os, time, tkinter as tk
+import sys, os, time, ctypes, tkinter as tk
+from ctypes import wintypes
 from PIL import ImageGrab
+
+# Fix DPI scaling mismatch
+ctypes.windll.user32.SetProcessDPIAware()
 
 sys.path.insert(0, os.path.dirname(__file__))
 from tetris import Tetris, Piece, GRID_WIDTH, GRID_HEIGHT
 
 os.makedirs('screenshots', exist_ok=True)
 
+def get_client_rect(hwnd):
+    """Get accurate client area screen coordinates via Windows API."""
+    rect = wintypes.RECT()
+    ctypes.windll.user32.GetClientRect(hwnd, ctypes.byref(rect))
+    pt = wintypes.POINT(0, 0)
+    ctypes.windll.user32.ClientToScreen(hwnd, ctypes.byref(pt))
+    return pt.x, pt.y, rect.right, rect.bottom
+
+def grab_window(root):
+    """Screenshot the tkinter window client area accurately."""
+    hwnd = ctypes.windll.user32.FindWindowW(None, root.title())
+    if not hwnd:
+        hwnd = int(root.frame(), 16)
+    x, y, w, h = get_client_rect(hwnd)
+    return ImageGrab.grab(bbox=(x, y, x + w, y + h))
+
 def take_screenshot(filename, prepare_fn):
     g = Tetris(ai_mode=False)
-    g.root.attributes('-topmost', True)  # force window on top
+    g.root.attributes('-topmost', True)
     g.root.update()
-    
-    # Populate stats
+
     g.score = 12500
     g.level = 5
     g.lines = 42
@@ -20,37 +39,23 @@ def take_screenshot(filename, prepare_fn):
     g.current.x = 4
     g.current.y = GRID_HEIGHT - 9
     g.next = Piece('I')
-    
-    # Apply prepare function (populate board, set menu, etc.)
+
     prepare_fn(g)
-    
-    # Force multiple renders
+
     for _ in range(10):
         g._draw()
         g.root.update()
     g.root.update_idletasks()
     time.sleep(1.0)
-    g.root.update()
-    
-    # Get ACCURATE window geometry
-    g.root.update_idletasks()
-    x = g.root.winfo_rootx()
-    y = g.root.winfo_rooty()
-    w = g.root.winfo_width()
-    h = g.root.winfo_height()
-    
-    print(f"  Window at ({x},{y}) {w}x{h}")
-    
-    # Bring to front and capture
     g.root.lift()
     g.root.attributes('-topmost', True)
     g.root.update()
     time.sleep(0.5)
-    
-    img = ImageGrab.grab(bbox=(x, y, x + w, y + h), all_screens=True)
+
+    img = grab_window(g.root)
     img.save(filename)
-    print(f"  Saved {filename}")
-    
+    print(f"  Saved {filename} ({img.width}x{img.height})")
+
     g.root.destroy()
     time.sleep(0.2)
 
